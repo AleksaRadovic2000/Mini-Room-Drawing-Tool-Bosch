@@ -1,0 +1,29 @@
+/*  
+
+Utility classes
+
+*/
+
+.flex {
+  display: flex;
+}
+
+.col {
+  flex-direction: column;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.justify {
+  justify-content: center;
+}
+
+.align-items {
+  align-items: center;
+}
+
+.gap-10 {
+  gap: 10px;
+}
