@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 
 
@@ -10,8 +10,9 @@ type Point = {
 type CanvasWrapperProps = {
     width: number;
     height: number;
+    canvasRef: React.RefObject<HTMLCanvasElement>;
     points: Point[];
-    onAddPoint: (p: Point) => void
+    onAddPoint: (p: Point) => void;
 };
 
 
@@ -20,10 +21,10 @@ type CanvasWrapperProps = {
 function CanvasWrapper ({
     width,
     height,
+    canvasRef,
     points,
     onAddPoint
 }: CanvasWrapperProps) {
-    const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
 
     //Crtanje tacaka
