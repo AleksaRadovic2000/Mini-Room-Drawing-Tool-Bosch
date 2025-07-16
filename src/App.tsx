@@ -10,11 +10,16 @@ type Point = {
 
 function App() {
   const [points, setPoints] = useState<Point[]>([]);
+  const [hoveredPoint, setHoveredPoint] = useState<Point | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [isCloseRoomCalled, setIsCloseRoomCalled] = useState<boolean>(false);
 
   const handleAddPoint = (p: Point) => setPoints(prev => [...prev, p]);
+  const handleHover = (p: Point | null) => setHoveredPoint(p);
 
   const handeCloseRoom = () => {
+    setIsCloseRoomCalled(true);
+
     const canvas = canvasRef.current;
     if(!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -68,7 +73,30 @@ function App() {
 
   const handleReset = () => {
     setPoints([]);
-  }
+    setHoveredPoint(null);
+    setIsCloseRoomCalled(false)
+  };
+
+  const handleExport = () => {
+    const canvas = canvasRef.current;
+    if(!canvas) return;
+
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = canvas.width;
+    exportCanvas.height = canvas.height;
+    const ectx = exportCanvas.getContext('2d');
+    if(!ectx) return;
+
+    ectx.fillStyle = 'white';
+    ectx.fillRect(0, 0, canvas.width, canvas.height);
+    ectx.drawImage(canvas, 0, 0);
+
+    const image = exportCanvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = image;
+    link.download = 'Room_designer_lite.png';
+    link.click();
+  };
 
 
   return (
@@ -77,12 +105,17 @@ function App() {
       <div className='flex row gap-10 justify'>
         <button onClick={handeCloseRoom}>Close Room</button>
         <button onClick={handleReset}>Reset</button>
-        <button>Save as PNG</button>
+        <button onClick={handleExport}>Save as PNG</button>
       </div>
       <CanvasWrapper
+      isCloseRoomCalled={isCloseRoomCalled}
+      setIsCloseRoomCalled={setIsCloseRoomCalled}
+      onCloseRoom={handeCloseRoom}
       canvasRef={canvasRef}
+      onHover={handleHover}
       onAddPoint={handleAddPoint}
       points={points}
+      hoveredPoint={hoveredPoint}
       width={800} height={800}
       />
     </div>
