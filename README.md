@@ -52,4 +52,4 @@ npm run dev
 
 ## Live Demo
 
-Follow the link to checkout the app ->
+Follow the [link](https://aleksaradovic2000.github.io/Mini-Room-Drawing-Tool-Bosch/) to checkout the app

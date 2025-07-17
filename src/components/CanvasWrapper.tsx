@@ -8,7 +8,7 @@ type Point = {
 type CanvasWrapperProps = {
     width: number;
     height: number;
-    canvasRef: React.RefObject<HTMLCanvasElement>;
+    canvasRef: React.RefObject<HTMLCanvasElement | null>;
     points: Point[];
     hoveredPoint: Point | null;
     onAddPoint: (p: Point) => void;
