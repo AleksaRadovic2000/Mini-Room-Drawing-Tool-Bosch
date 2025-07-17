@@ -2,7 +2,7 @@ import CanvasWrapper from './components/CanvasWrapper'
 import './App.css'
 import { useState, useRef } from 'react';
 import ConfirmModal from './components/ConfirmModal';
-import { isAngleMoreHorisontal, createEdges, hasProperXIntersection } from './Utility/geometryUtils';
+import { isAngleMoreHorisontal, createEdges, hasProperXIntersection } from './utils/geometryUtils';
 
 type Point = {
     x: number;
