@@ -1,7 +1,5 @@
 import { useEffect, type Dispatch, type SetStateAction } from "react";
 
-
-
 type Point = {
     x: number;
     y: number;
@@ -21,7 +19,14 @@ type CanvasWrapperProps = {
 };
 
 
+const colors = {
+  canvasBg: "rgb(255, 255, 255)",
+  point: "rgb(0, 0, 0)",
+  pointHover: "rgb(55, 65, 81)",
+  line: "rgb(156, 163, 175)"
+};
 
+const canvasFont = '15px Arial';
 
 function CanvasWrapper ({
     width,
@@ -33,11 +38,10 @@ function CanvasWrapper ({
     onHover,
     isCloseRoomCalled,
     setIsCloseRoomCalled,
-    onCloseRoom
+    onCloseRoom,
 }: CanvasWrapperProps) {
 
 
-    //Crtanje tacaka
     useEffect(() => {
         const canvas = canvasRef.current;
         if(!canvas) return;
@@ -50,22 +54,25 @@ function CanvasWrapper ({
         points.forEach((p) => {
             ctx.beginPath();
             ctx.arc(p.x, p.y, 2, 0, 2 * Math.PI);
-            ctx.fillStyle = 'black';
+            ctx.fillStyle = colors.point;
             ctx.fill()
         })
 
         if(hoveredPoint) {
-            ctx.fillStyle = 'blue';
-            ctx.font = '15px Arial';
+            canvas.style.cursor = 'pointer'
+            ctx.fillStyle = colors.pointHover;
+            ctx.font = canvasFont;
             ctx.fillText(`(${hoveredPoint.x}, ${hoveredPoint.y})`,
                 hoveredPoint.x+10, hoveredPoint.y -10);
 
             if(isCloseRoomCalled) onCloseRoom();
+        }else{
+            canvas.style.cursor = ''
         }
 
         if(isCloseRoomCalled) onCloseRoom();
 
-    },[points, hoveredPoint, isCloseRoomCalled]);
+    },[points, hoveredPoint]);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -86,7 +93,7 @@ function CanvasWrapper ({
             const y = event.clientY - rect.top;
             const hovered = points.find( p => Math.hypot(p.x - x, p.y - y) < 3);
             onHover(hovered || null)
-        }
+        };
 
         canvas.addEventListener('click', handleClick);
         canvas.addEventListener('mousemove', handleMove);
@@ -95,14 +102,17 @@ function CanvasWrapper ({
             canvas.removeEventListener('click', handleClick);
             canvas.removeEventListener('mousemove', handleMove)
         };
-    }, [points, hoveredPoint, onAddPoint])
+    }, [points, hoveredPoint])
 
 
 
-    return <canvas width={width} height={height}
-        ref={canvasRef}
-        style={{backgroundColor: 'lightblue'}}
-    ></canvas>
+    return (
+        <div className="canvas-wrapper mb-10">
+            <canvas width={width} height={height}
+            ref={canvasRef}
+            />
+        </div>
+    )
 }
 
 export default CanvasWrapper;
